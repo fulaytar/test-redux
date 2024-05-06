@@ -1,46 +1,22 @@
-import { createStore } from "redux";
+import { createStore, combineReducers } from "redux";
+import { balanceReducer } from "./balanceSlice";
+import { localeReducer } from "./localeSlice";
 /* Витягли з проекту */
 
-export const deposit = (value) => {
-  return {
-    type: "balance/deposit",
-    payload: value,
-  };
-};
 
-export const withdraw = (value) => {
-  return {
-    type: "balance/withdraw",
-    payload: value,
-  };
-};
 
-const initialState = {
-  balance: {
-    value: 0,
-  },
-};
-/* створили баланс */
-
-/* Тут логіка знизу */
-const rootReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case "balance/deposit":
-      return {
-        balance: {
-          value: state.balance.value + action.payload,
-        },
-      };
-    case "balance/withdraw":
-      return {
-        balance: {
-          value: state.balance.value - action.payload,
-        },
-      };
-    default:
-      return state;
-  }
-};
+/* тут композиція робітників */
+const rootReducer = combineReducers({
+  balance: balanceReducer,
+  locale: localeReducer,
+});
 
 export const store = createStore(rootReducer);
 /* ось тут магія */
+
+
+
+/* Кроки 
+1)Прив`язати store до елементів
+2)Create action and send  
+3)Обробка action in reducer(через switch case)*/

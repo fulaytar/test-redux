@@ -8,3 +8,9 @@
 ul {
   list-style-type: none;
 }
+button,
+h1,
+p,
+select {
+  margin-bottom: 15px;
+}
