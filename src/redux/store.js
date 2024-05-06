@@ -1,20 +1,24 @@
-import { createStore, combineReducers } from "redux";
-import { balanceReducer } from "./balanceSlice";
-import { localeReducer } from "./localeSlice";
+/* import { createStore, combineReducers } from "redux"; */
+import { configureStore } from "@reduxjs/toolkit";
+import balanceReducer from "./balanceSlice";
+import  localeReducer  from "./localeSlice";
 /* Витягли з проекту */
 
-
-
 /* тут композиція робітників */
-const rootReducer = combineReducers({
+/* const rootReducer = combineReducers({
   balance: balanceReducer,
   locale: localeReducer,
 });
-
-export const store = createStore(rootReducer);
+ */
+/* export const store = createStore(rootReducer); */
 /* ось тут магія */
 
-
+export const store1 = configureStore({
+  reducer: {
+    balance: balanceReducer,
+    locale: localeReducer,
+  },
+});
 
 /* Кроки 
 1)Прив`язати store до елементів
