@@ -1,7 +1,50 @@
 /* import { createStore, combineReducers } from "redux"; */
 import { configureStore } from "@reduxjs/toolkit";
 import balanceReducer from "./balanceSlice";
-import  localeReducer  from "./localeSlice";
+import localeReducer from "./localeSlice";
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from "redux-persist";
+import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
+
+const balancePersistConfig = {
+  key: "balanceValue",
+  storage,
+  whitelist: ["value"],
+};
+
+const localePersistConfig = {
+  key: "lang",
+  storage,
+  whitelist: ["lang"],
+};
+
+const pBalanceReducer = persistReducer(balancePersistConfig, balanceReducer);
+
+const pLocaleReducer = persistReducer(localePersistConfig, localeReducer);
+
+export const store = configureStore({
+  reducer: {
+    balance: pBalanceReducer,
+    locale: pLocaleReducer,
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
+});
+
+export const persistor = persistStore(store);
+
 /* Витягли з проекту */
 
 /* тут композиція робітників */
@@ -12,13 +55,6 @@ import  localeReducer  from "./localeSlice";
  */
 /* export const store = createStore(rootReducer); */
 /* ось тут магія */
-
-export const store1 = configureStore({
-  reducer: {
-    balance: balanceReducer,
-    locale: localeReducer,
-  },
-});
 
 /* Кроки 
 1)Прив`язати store до елементів
